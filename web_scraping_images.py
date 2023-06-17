@@ -1,9 +1,12 @@
+#web scrapper : download graph images or any image of your choice !
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 import time
 import requests
 import os
 from bs4 import BeautifulSoup
+import random
 
 
 # User input for image details
@@ -15,11 +18,23 @@ min_size = int(input("Enter the minimum size of the images (in bytes): "))
 dimensions_input = input("Enter the desired dimensions of the images (optional, leave blank to skip): ")
 dimensions = dimensions_input.split("x") if dimensions_input else None
 
+# User input for image source (random or URL)
+image_source = input("Choose the image source (random/url): ")
+
+if image_source.lower() == "random":
+    random_url = "https://www.istockphoto.com/photos/x-y-graph"  # url which provides random graph images
+else:
+    url = input("Enter the URL to scrape images from: ")
+    random_url = None
+
 driver = webdriver.Safari()
 
-# Open the desired URL
-url = "https://in.images.search.yahoo.com/yhs/search;_ylt=Awrx.wqOrYlkK.4J5xjnHgx.;_ylu=Y29sbwMEcG9zAzEEdnRpZAMEc2VjA3BpdnM-?p=graph+images&type=ANYS3_D43OU_ext_bcr_%2460129_000000%24&param1=h4V77zECSIgvaawHmDS4wrdHZvefvDtppsLWeKoaeepgvQu3Xpuvrguamsd75aTsb4EW4UxLmp9T849VFgW_1Od8N9Ubml9ea01wxLDljvrdSdBYqMXi-dGMEvpNX7jc2_m8ripxPkuiBqbXQbanHr62YWjxSRXWz0qYsHHYBl4ct02fCkDofdsuSVbLGTMwX8msQQkJfSWppHSnJHmJ5D-8SyZ95QEV2xTeNpzQn5Ubm0G5TOZ2bFd-8HbpaGQG9YEHw5cRGe3xsFsdtyqkljbADAc2scHIwCTV_0xb5qEX-PS0fR0C44elNlmRwCmQ4jPtRpNS4YjwZZ5JLxd0GwTqbyjh1Xupd1XV7zNerWEPv26y&hsimp=yhs-SF01&hspart=Lkry&ei=UTF-8&fr=yhs-Lkry-SF01"
-driver.get(url)
+# Open the desired URL or random URL
+if random_url:
+    driver.get(random_url)
+else:
+    driver.get(url)
+    
 time.sleep(2)  # Add a delay to allow the page to load completely
 
 html_content = driver.page_source
@@ -27,7 +42,7 @@ html_content = driver.page_source
 soup = BeautifulSoup(html_content, 'html.parser')
 
 images = soup.find_all('img')
-counter = 0  # Counter variable to keep track of downloaded images
+counter = 0  
 for i, img in enumerate(images):
     if 'src' in img.attrs:
         image_url = img['src']
@@ -51,9 +66,28 @@ for i, img in enumerate(images):
 
         counter += 1  
         if counter == num_images:
-            break  
+            break 
 
         if counter % 10 == 0:
             print(f"Downloaded {counter} images.")
+
+driver.quit()
+
+
+
+
+
+
+
+
+
+
+
+
+# url : https://www.shutterstock.com/search/graph-x-y-axis
+# Made by Anubhav & Yash 
+
+
+    
 
 
