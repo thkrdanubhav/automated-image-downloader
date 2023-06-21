@@ -1,4 +1,4 @@
-#Image downloader , download as many images you want and change the keyord & no. of images according to your needs !
+#Image downloader , download as many images as you want and change the keyord & no. of images according to your needs !
 import requests
 from bs4 import BeautifulSoup
 import urllib.parse
